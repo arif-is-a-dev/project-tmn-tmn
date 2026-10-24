@@ -1,0 +1,17 @@
+# Core ETL and data layer (read-only)
+pandas==2.3.3
+openpyxl==3.1.5
+SQLAlchemy==2.0.50
+psycopg2-binary==2.9.12
+python-dotenv==1.2.4
+
+# Backend (production)
+fastapi==0.115.12
+uvicorn[standard]==0.34.0
+pydantic==2.10.6
+pydantic-settings==2.7.1
+
+# Testing
+httpx==0.28.1
+pytest==8.3.5
+pytest-asyncio==0.25.2

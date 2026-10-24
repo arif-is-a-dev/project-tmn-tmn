@@ -1,0 +1,284 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════
+   VINIX7 — Field Intelligence Lab
+   Design tokens via CSS custom properties
+   Light + Dark mode, no flash on load
+   ═══════════════════════════════════════════════════════════ */
+
+@layer base {
+  /* ── Light mode (default) ──────────────────────────────── */
+  :root {
+    --bg:           #F4F3ED;
+    --surface:      #FFFFFF;
+    --surface-alt:  #EDECE6;
+    --text-primary: #20251E;
+    --text-secondary: #65695B;
+    --text-muted:   #9A9E91;
+    --accent:       #D9F36A;
+    --accent-dim:   #B8D44A;
+    --accent-text:  #3A4220;
+    --border:       #DCDDD2;
+    --border-subtle:#ECEAE2;
+    --danger:       #E05A3A;
+    --danger-bg:    #FDF0EC;
+    --warning:      #D4A017;
+    --warning-bg:   #FDF8E8;
+    --success:      #4A9E6E;
+    --success-bg:   #EDF7F0;
+    --shadow-color: rgba(32, 37, 30, 0.06);
+    --skeleton-from: #ECEAE2;
+    --skeleton-via:  #F4F3ED;
+    --overlay:      rgba(32, 37, 30, 0.5);
+    --nav-bg:       #20251E;
+    --nav-text:     rgba(241, 242, 233, 0.6);
+    --nav-text-active: #F1F2E9;
+    --nav-accent:   #D9F36A;
+  }
+
+  /* ── Dark mode ─────────────────────────────────────────── */
+  [data-theme="dark"] {
+    --bg:           #151713;
+    --surface:      #20231D;
+    --surface-alt:  #2A2D24;
+    --text-primary: #F1F2E9;
+    --text-secondary: #A5AD99;
+    --text-muted:   #6B7260;
+    --accent:       #D9F36A;
+    --accent-dim:   #B8D44A;
+    --accent-text:  #1A1D16;
+    --border:       #363A31;
+    --border-subtle:#2A2D24;
+    --danger:       #F07A5A;
+    --danger-bg:    #2D1F1A;
+    --warning:      #E8B830;
+    --warning-bg:   #2D2816;
+    --success:      #6BBF8A;
+    --success-bg:   #1A2D20;
+    --shadow-color: rgba(0, 0, 0, 0.25);
+    --skeleton-from: #2A2D24;
+    --skeleton-via:  #20231D;
+    --overlay:      rgba(0, 0, 0, 0.6);
+    --nav-bg:       #1A1D16;
+    --nav-text:     rgba(165, 173, 153, 0.7);
+    --nav-text-active: #F1F2E9;
+    --nav-accent:   #D9F36A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  /* ── Scrollbar ─────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* ── Selection ─────────────────────────────────────────── */
+  ::selection { background: var(--accent); color: var(--accent-text); }
+
+  /* ── Focus ─────────────────────────────────────────────── */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  /* ── Reduced motion ────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ── Skeleton shimmer ──────────────────────────────────── */
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--skeleton-from) 25%, var(--skeleton-via) 50%, var(--skeleton-from) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.8s ease-in-out infinite;
+    border-radius: 3px;
+  }
+
+  /* ── Interactive surface ───────────────────────────────── */
+  .surface {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  .surface-hover {
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .surface-hover:hover {
+    border-color: var(--accent-dim);
+    box-shadow: 0 2px 8px -2px var(--shadow-color);
+  }
+
+  /* ── Data table ────────────────────────────────────────── */
+  .data-table {
+    width: 100%;
+    font-size: 0.8125rem;
+    border-collapse: collapse;
+  }
+  .data-table thead tr {
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table th {
+    padding: 0.625rem 1rem;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    white-space: nowrap;
+    text-align: left;
+  }
+  .data-table td {
+    padding: 0.625rem 1rem;
+    vertical-align: middle;
+    color: var(--text-primary);
+  }
+  .data-table tbody tr {
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background-color 0.1s ease;
+  }
+  .data-table tbody tr:last-child { border-bottom: none; }
+  .data-table tbody tr:hover { background: var(--surface-alt); }
+
+}
+
+/* ── App shell ─────────────────────────────────────────────── */
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.app-nav {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--nav-bg);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem 2rem;
+}
+
+@media (max-width: 1024px) {
+  .page-content { padding: 1.5rem; }
+}
+@media (max-width: 768px) {
+  .page-content { padding: 1rem; }
+}
+
+/* ── Nav items ─────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.4375rem 0.75rem;
+  border-radius: 5px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--nav-text);
+  transition: all 0.12s ease;
+  text-decoration: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.nav-item:hover {
+  color: var(--nav-text-active);
+  background: rgba(255,255,255,0.06);
+}
+
+.nav-item.active {
+  color: var(--nav-accent);
+  background: rgba(217, 243, 106, 0.08);
+}
+
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--nav-accent);
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── Mobile overlay ────────────────────────────────────────── */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: var(--overlay);
+  backdrop-filter: blur(2px);
+}
+
+/* ── Product card ──────────────────────────────────────────── */
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-card:hover {
+  border-color: var(--accent-dim);
+  box-shadow: 0 4px 12px -4px var(--shadow-color);
+}
+
+.product-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

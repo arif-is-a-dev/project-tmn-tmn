@@ -10,7 +10,7 @@
  *   - Backend process being overwhelmed
  */
 
-const BASE = '/api';
+const BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/+$/, '');
 
 /** Default timeout for all API requests (milliseconds). */
 export const REQUEST_TIMEOUT_MS = 10_000;

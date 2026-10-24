@@ -40,26 +40,24 @@ class TestHealthEndpoint:
         assert "localhost:5432" not in body_str, "Host:port leaked in health response"
         assert "VINIX7_DATABASE_URL" not in body_str, "ENV var name leaked in health response"
 
+
     def test_health_degraded_when_url_not_set(self):
         """When VINIX7_DATABASE_URL is not set, health returns 503 degraded."""
-        import os as _os
         from backend.app.main import app as _app
         from backend.app.database import dispose_engine
 
         dispose_engine()
 
-        # Temporarily clear the env var
-        saved = _os.environ.pop("VINIX7_DATABASE_URL", None)
-        try:
+        with patch.dict(os.environ, {"VINIX7_DATABASE_URL": ""}):
             with TestClient(_app) as c:
                 response = c.get("/api/health")
-            assert response.status_code == 503
-            assert response.json()["detail"]["status"] == "degraded"
-            assert response.json()["detail"]["database"] == "configuration_error"
-        finally:
-            if saved is not None:
-                _os.environ["VINIX7_DATABASE_URL"] = saved
-            dispose_engine()
+
+        assert response.status_code == 503
+        assert response.json()["detail"]["status"] == "degraded"
+        assert response.json()["detail"]["database"] == "configuration_error"
+
+        dispose_engine()
+
 
     def test_root_returns_greeting(self, client: TestClient):
         """The root path / returns a simple message."""

@@ -24,6 +24,7 @@ htmlcov/
 # Machine learning model artifacts
 *.pkl
 *.joblib
+!backend/models/sales_forecast_pipeline.pkl
 
 # Frontend dependencies and build output
 frontend/node_modules/

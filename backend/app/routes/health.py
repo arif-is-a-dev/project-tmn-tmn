@@ -26,12 +26,16 @@ def health_check() -> HealthResponse:
     No sensitive information (host, port, credentials) is included in the
     response, as required by the PRD security guidelines.
     """
+    import os
     from ..config import DatabaseSettings
 
-    # DatabaseSettings() raises RuntimeError if URL is missing or not local.
+    # Health check harus mendeteksi variabel yang benar-benar tidak tersedia.
     try:
+        if not os.getenv("VINIX7_DATABASE_URL", "").strip():
+            raise RuntimeError("VINIX7_DATABASE_URL is not set.")
+
         settings = DatabaseSettings()
-    except RuntimeError as exc:
+    except (RuntimeError, ValueError) as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail={
